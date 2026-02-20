@@ -1,0 +1,400 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg:        #060608;
+  --s1:        #0c0c10;
+  --s2:        #131318;
+  --s3:        #1a1a22;
+  --border:    rgba(255,255,255,0.07);
+  --border2:   rgba(255,255,255,0.12);
+  --amber:     #f5a623;
+  --amber2:    #fdd68a;
+  --indigo:    #7c70f0;
+  --mint:      #2ed8a8;
+  --rose:      #f0476d;
+  --sky:       #38bdf8;
+  --text:      #f0f0ee;
+  --muted:     #4a4a58;
+  --muted2:    #6a6a7a;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* ── Grain texture overlay ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── Gradient orbs ── */
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  z-index: 0;
+}
+.orb-1 { width: 700px; height: 700px; top: -200px; right: -200px; background: radial-gradient(circle, rgba(124,112,240,0.12) 0%, transparent 65%); }
+.orb-2 { width: 500px; height: 500px; bottom: -150px; left: -150px; background: radial-gradient(circle, rgba(245,166,35,0.08) 0%, transparent 65%); }
+.orb-3 { width: 400px; height: 400px; top: 50%; left: 30%; background: radial-gradient(circle, rgba(46,216,168,0.05) 0%, transparent 65%); }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--s3); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* ── Glass card ── */
+.glass {
+  background: rgba(19,19,24,0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+}
+.glass-bright {
+  background: rgba(26,26,34,0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border2);
+}
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideRight {
+  from { opacity: 0; transform: translateX(-12px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes pulse-ring {
+  0%   { transform: scale(1);   opacity: 0.8; }
+  50%  { transform: scale(1.06); opacity: 0.4; }
+  100% { transform: scale(1);   opacity: 0.8; }
+}
+@keyframes confetti-fall {
+  0%   { transform: translateY(0) rotate(0deg) scale(1);   opacity: 1; }
+  100% { transform: translateY(120px) rotate(720deg) scale(0); opacity: 0; }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes spin-slow { to { transform: rotate(360deg); } }
+@keyframes bounce-in {
+  0%   { transform: scale(0); }
+  60%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(245,166,35,0.15); }
+  50%       { box-shadow: 0 0 40px rgba(245,166,35,0.35); }
+}
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(120px) scale(0.9); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes task-complete {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(0.97); }
+  60%  { transform: scale(1.01); }
+  100% { transform: scale(1); }
+}
+@keyframes number-tick {
+  from { transform: translateY(10px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+@keyframes drag-wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25%      { transform: rotate(-1deg); }
+  75%      { transform: rotate(1deg); }
+}
+
+.anim-fade-up   { animation: fadeUp    0.4s ease both; }
+.anim-scale-in  { animation: scaleIn   0.3s ease both; }
+.anim-slide-down{ animation: slideDown 0.3s ease both; }
+.anim-toast     { animation: toast-in  0.35s cubic-bezier(0.175,0.885,0.32,1.275) both; }
+.anim-bounce-in { animation: bounce-in 0.4s cubic-bezier(0.175,0.885,0.32,1.275) both; }
+.anim-task-done { animation: task-complete 0.4s ease; }
+
+/* ── Stagger delays ── */
+.delay-1 { animation-delay: 0.05s; }
+.delay-2 { animation-delay: 0.10s; }
+.delay-3 { animation-delay: 0.15s; }
+.delay-4 { animation-delay: 0.20s; }
+.delay-5 { animation-delay: 0.25s; }
+.delay-6 { animation-delay: 0.30s; }
+
+/* ── Priority borders ── */
+.pri-high   { border-left: 2.5px solid var(--rose) !important; }
+.pri-medium { border-left: 2.5px solid var(--amber) !important; }
+.pri-low    { border-left: 2.5px solid var(--mint) !important; }
+
+/* ── Shimmer text ── */
+.shimmer-text {
+  background: linear-gradient(90deg, var(--amber), var(--amber2), var(--amber));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s linear infinite;
+}
+
+/* ── Custom checkbox ── */
+.custom-check {
+  appearance: none; -webkit-appearance: none;
+  width: 20px; height: 20px;
+  border: 2px solid var(--muted);
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.custom-check:checked {
+  background: var(--amber);
+  border-color: var(--amber);
+}
+.custom-check:checked::after {
+  content: '';
+  position: absolute;
+  top: 3px; left: 6px;
+  width: 5px; height: 9px;
+  border: 2px solid #06060a;
+  border-top: none; border-left: none;
+  transform: rotate(45deg);
+}
+.custom-check:hover:not(:checked) { border-color: var(--amber); }
+
+/* ── Glow button ── */
+.btn-amber {
+  background: var(--amber);
+  color: #06060a;
+  font-weight: 700;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.btn-amber::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 60%);
+  pointer-events: none;
+}
+.btn-amber:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 30px rgba(245,166,35,0.4);
+}
+.btn-amber:active { transform: translateY(0); }
+
+/* ── Icon btn ── */
+.icon-btn {
+  display: flex; align-items: center; justify-content: center;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--muted2);
+  cursor: pointer;
+  transition: all 0.18s;
+  font-family: inherit;
+}
+.icon-btn:hover { background: var(--s3); border-color: var(--border2); color: var(--text); }
+.icon-btn.danger:hover { background: rgba(240,71,109,0.12); border-color: rgba(240,71,109,0.3); color: var(--rose); }
+.icon-btn.accent:hover { background: rgba(124,112,240,0.12); border-color: rgba(124,112,240,0.3); color: var(--indigo); }
+
+/* ── Input ── */
+.tf-input {
+  background: var(--s2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s;
+  padding: 12px 16px;
+}
+.tf-input::placeholder { color: var(--muted); }
+.tf-input:focus {
+  border-color: var(--amber);
+  box-shadow: 0 0 0 3px rgba(245,166,35,0.12);
+  background: var(--s3);
+}
+
+/* ── Task card ── */
+.task-card {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition: all 0.22s;
+  position: relative;
+  overflow: hidden;
+}
+.task-card:hover {
+  border-color: var(--border2);
+  background: var(--s2);
+  transform: translateX(3px);
+}
+.task-card.dragging {
+  opacity: 0.5;
+  animation: drag-wiggle 0.2s ease;
+}
+.task-card.drag-over {
+  border-color: var(--amber);
+  box-shadow: 0 0 0 2px rgba(245,166,35,0.2);
+}
+.task-card.completed-card { opacity: 0.45; }
+
+/* ── Category pill ── */
+.cat-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 0.18s;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* ── Progress ring ── */
+.ring-track { fill: none; }
+.ring-progress { fill: none; stroke-linecap: round; transition: stroke-dashoffset 0.8s cubic-bezier(0.4,0,0.2,1); }
+
+/* ── Stat card ── */
+.stat-card {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 20px;
+  transition: all 0.2s;
+}
+.stat-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+
+/* ── Due date colors ── */
+.due-overdue { color: var(--rose); }
+.due-today   { color: var(--amber); }
+.due-soon    { color: var(--sky); }
+.due-future  { color: var(--muted2); }
+
+/* ── Search highlight ── */
+.highlight { background: rgba(245,166,35,0.25); border-radius: 3px; padding: 0 2px; color: var(--amber2); }
+
+/* ── Drag handle ── */
+.drag-handle {
+  cursor: grab; color: var(--muted);
+  transition: color 0.18s;
+  display: flex; align-items: center;
+}
+.drag-handle:hover { color: var(--muted2); }
+.drag-handle:active { cursor: grabbing; }
+
+/* ── Notes textarea ── */
+.notes-area {
+  background: var(--s3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--muted2);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+  resize: none;
+  outline: none;
+  padding: 10px 12px;
+  transition: all 0.2s;
+  width: 100%;
+}
+.notes-area:focus { border-color: var(--border2); color: var(--text); }
+
+/* ── Confetti particle ── */
+.confetti-particle {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 9998;
+  animation: confetti-fall 0.9s ease-out forwards;
+}
+
+/* ── Kbd shortcut ── */
+kbd {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--s3);
+  border: 1px solid var(--border2);
+  border-radius: 5px;
+  padding: 2px 6px;
+  font-size: 10px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--muted2);
+  font-weight: 600;
+}
+
+/* ── Select ── */
+select.tf-select {
+  appearance: none;
+  background: var(--s2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236a6a7a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 12px center;
+  padding-right: 32px;
+  cursor: pointer;
+}
+select.tf-select option { background: var(--s2); }
+
+/* ── Toggle switch ── */
+.toggle {
+  position: relative;
+  width: 36px; height: 20px;
+  cursor: pointer;
+}
+.toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+.toggle-track {
+  position: absolute; inset: 0;
+  background: var(--s3);
+  border: 1px solid var(--border2);
+  border-radius: 100px;
+  transition: all 0.2s;
+}
+.toggle input:checked ~ .toggle-track { background: var(--amber); border-color: var(--amber); }
+.toggle-thumb {
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 14px; height: 14px;
+  background: var(--muted2);
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+.toggle input:checked ~ .toggle-thumb { left: 19px; background: #06060a; }
+
+/* Task aksiyon butonları hover'da görün */
+.task-card:hover .task-actions { opacity: 1 !important; }
